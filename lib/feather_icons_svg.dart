@@ -20,11 +20,13 @@ class FeatherIcon extends StatelessWidget {
     this.color,
     this.size,
     this.strokeWidth,
+    this.fill = false,
   });
 
   final FeatherIcons icon;
   final Color? color;
   final double? size;
+  final bool fill;
 
   /// Customize icon's stroke width. Defaults to 2.0
   final double? strokeWidth;
@@ -34,17 +36,28 @@ class FeatherIcon extends StatelessWidget {
     final featherIconTheme = FeatherIconTheme.of(context);
     final _strokeWidth = _getStrokeWidth(featherIconTheme);
     final iconTheme = IconTheme.of(context);
-
+    final color = _getColor(featherIconTheme, iconTheme);
     final size = _getSize(iconTheme);
 
+    var iconString = icon.data;
+
+    if (_strokeWidth != 2) {
+      iconString = iconString.replaceFirst(
+        'stroke-width="2"',
+        'stroke-width="$_strokeWidth"',
+      );
+    }
+
+    if (fill == true) {
+      iconString = iconString.replaceFirst(
+        'fill="none"',
+        'fill="' + color.toHex() + '"',
+      );
+    }
+
     return SvgPicture.string(
-      _strokeWidth != 2
-          ? icon.data.replaceFirst(
-              'stroke-width="2"',
-              'stroke-width="$_strokeWidth"',
-            )
-          : icon.data,
-      color: _getColor(featherIconTheme, iconTheme),
+      iconString,
+      color: color,
       width: size,
       height: size,
       alignment: Alignment.center,
@@ -86,4 +99,13 @@ class FeatherIcon extends StatelessWidget {
 
     return 24;
   }
+}
+
+extension HexColor on Color {
+  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
+  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+      '${alpha.toRadixString(16).padLeft(2, '0')}'
+      '${red.toRadixString(16).padLeft(2, '0')}'
+      '${green.toRadixString(16).padLeft(2, '0')}'
+      '${blue.toRadixString(16).padLeft(2, '0')}';
 }
