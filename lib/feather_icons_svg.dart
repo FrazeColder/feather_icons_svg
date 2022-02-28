@@ -65,6 +65,13 @@ class FeatherIcon extends StatelessWidget {
         'fill="none"',
         'fill="' + fillColor.toHex() + '"',
       );
+    } else if (fill.runtimeType == Color) {
+      Color fillColor = fill;
+
+      iconString = iconString.replaceFirst(
+        'fill="none"',
+        'fill="' + fillColor.toHex() + '"',
+      );
     }
 
     return SvgPicture.string(
