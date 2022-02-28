@@ -3,6 +3,9 @@
 [Feather Icons](https://feathericons.com/) port to Flutter. This package renders the icons as SVG
 pictures. This makes it possible to customize icon properties in runtime (stroke width etc.).
 
+## Difference to the original package
+I have added a `fill` property to this package, so you can use the iconic feather icons also as solid icons. Doesn't work on all icons!
+
 ## Usage
 
 ```dart
@@ -14,6 +17,7 @@ class MyExampleWidget extends StatelessWidget {
       color: Colors.red,
       size: 30,
       strokeWidth: 1.5,
+      fill: true // default is false
     );
   }
 }
