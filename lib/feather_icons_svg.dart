@@ -26,7 +26,7 @@ class FeatherIcon extends StatelessWidget {
   final FeatherIcons icon;
   final Color? color;
   final double? size;
-  final bool fill;
+  final dynamic fill;
 
   /// Customize icon's stroke width. Defaults to 2.0
   final double? strokeWidth;
@@ -41,6 +41,11 @@ class FeatherIcon extends StatelessWidget {
 
     var iconString = icon.data;
 
+    iconString = iconString.replaceFirst(
+      'stroke="#000000"',
+      'stroke="' + color.toHex() + '"',
+    );
+
     if (_strokeWidth != 2) {
       iconString = iconString.replaceFirst(
         'stroke-width="2"',
@@ -48,16 +53,23 @@ class FeatherIcon extends StatelessWidget {
       );
     }
 
-    if (fill == true) {
+    if (fill.runtimeType == bool && fill == true) {
       iconString = iconString.replaceFirst(
         'fill="none"',
         'fill="' + color.toHex() + '"',
+      );
+    } else if (fill.runtimeType == MaterialColor) {
+      MaterialColor fillColor = fill;
+
+      iconString = iconString.replaceFirst(
+        'fill="none"',
+        'fill="' + fillColor.toHex() + '"',
       );
     }
 
     return SvgPicture.string(
       iconString,
-      color: color,
+      //color: color,
       width: size,
       height: size,
       alignment: Alignment.center,
@@ -104,7 +116,6 @@ class FeatherIcon extends StatelessWidget {
 extension HexColor on Color {
   /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
   String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${alpha.toRadixString(16).padLeft(2, '0')}'
       '${red.toRadixString(16).padLeft(2, '0')}'
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';

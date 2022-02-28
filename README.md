@@ -4,7 +4,8 @@
 pictures. This makes it possible to customize icon properties in runtime (stroke width etc.).
 
 ## Difference to the original package
-I have added a `fill` property to this package, so you can use the iconic feather icons also as solid icons. Doesn't work on all icons!
+I have added a `fill` property to this package, so you can use the iconic feather icons also as solid icons.
+You can either pass `true` so the icon will be filled with the color which is already provided via the `color` property, or you can simply pass you own Color to the `fill` property.
 
 ## Usage
 
@@ -17,7 +18,7 @@ class MyExampleWidget extends StatelessWidget {
       color: Colors.red,
       size: 30,
       strokeWidth: 1.5,
-      fill: true // default is false
+      fill: true // also accepts a Color property e.g.: fill: Colors.yellow
     );
   }
 }
